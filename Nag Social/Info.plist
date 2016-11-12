@@ -41,5 +41,29 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>fb198197320625266</string>
+            </array>
+        </dict>
+    </array>
+    <key>FacebookAppID</key>
+    <string>198197320625266</string>
+    <key>FacebookDisplayName</key>
+    <string>Nag Social</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>fbapi</string>
+        <string>fb-messenger-api</string>
+        <string>fbauth2</string>
+        <string>fbshareextension</string>
+    </array>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>We need access to photo to provide you awesome photo sharing</string>
+    
 </dict>
 </plist>
