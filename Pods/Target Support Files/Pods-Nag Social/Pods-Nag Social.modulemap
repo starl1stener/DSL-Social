@@ -1,0 +1,6 @@
+framework module Pods_Nag_Social {
+  umbrella header "Pods-Nag Social-umbrella.h"
+
+  export *
+  module * { export * }
+}
