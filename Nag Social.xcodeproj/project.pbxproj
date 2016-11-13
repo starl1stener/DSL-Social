@@ -18,6 +18,7 @@
 		1549197C1DD766F5002E16BA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1549197B1DD766F5002E16BA /* Constants.swift */; };
 		1549197F1DD76883002E16BA /* RoundBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1549197E1DD76883002E16BA /* RoundBtn.swift */; };
 		154919811DD76B79002E16BA /* FancyBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154919801DD76B79002E16BA /* FancyBtn.swift */; };
+		1570C0361DD8AC9800B84653 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1570C0351DD8AC9800B84653 /* PostCell.swift */; };
 		18019EC31DD89C9A00F9A0C4 /* FeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18019EC21DD89C9A00F9A0C4 /* FeedVC.swift */; };
 		18019EC51DD8A01A00F9A0C4 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18019EC41DD8A01A00F9A0C4 /* CircleView.swift */; };
 		1F42C4066FE2FE95C65C490B /* Pods_Nag_Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F23682A747FAB90D3ABFBB84 /* Pods_Nag_Social.framework */; };
@@ -38,6 +39,7 @@
 		1549197E1DD76883002E16BA /* RoundBtn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundBtn.swift; sourceTree = "<group>"; };
 		154919801DD76B79002E16BA /* FancyBtn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyBtn.swift; sourceTree = "<group>"; };
 		1570C0341DD7A26B00B84653 /* Nag Social.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Nag Social.entitlements"; sourceTree = "<group>"; };
+		1570C0351DD8AC9800B84653 /* PostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		18019EC21DD89C9A00F9A0C4 /* FeedVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedVC.swift; sourceTree = "<group>"; };
 		18019EC41DD8A01A00F9A0C4 /* CircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
 		590A4B78B76684CF5B9621A9 /* Pods-Nag Social.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nag Social.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Nag Social/Pods-Nag Social.debug.xcconfig"; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				154919771DD762BF002E16BA /* FancyField.swift */,
 				154919801DD76B79002E16BA /* FancyBtn.swift */,
 				18019EC41DD8A01A00F9A0C4 /* CircleView.swift */,
+				1570C0351DD8AC9800B84653 /* PostCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -285,6 +288,7 @@
 				1549197A1DD765ED002E16BA /* FancyView.swift in Sources */,
 				154919611DD7318B002E16BA /* AppDelegate.swift in Sources */,
 				154919811DD76B79002E16BA /* FancyBtn.swift in Sources */,
+				1570C0361DD8AC9800B84653 /* PostCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
