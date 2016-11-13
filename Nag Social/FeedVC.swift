@@ -70,7 +70,7 @@ extension FeedVC: UITableViewDataSource {
         
         
         
-        return UITableViewCell()
+        return tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath)
     }
     
 }
