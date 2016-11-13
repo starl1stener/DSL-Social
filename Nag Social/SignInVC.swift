@@ -9,6 +9,7 @@
 import UIKit
 import FBSDKLoginKit
 import Firebase
+import SwiftKeychainWrapper
 
 class SignInVC: UIViewController {
     
@@ -18,13 +19,20 @@ class SignInVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        
+        
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if let _ = KeychainWrapper.standard.string(forKey: KEY_UID) {
+            performSegue(withIdentifier: "goToFeed", sender: nil)
+            print("===NAG=== GOING TO FEED VC")
+        }
     }
+    
     
     func firebaseAuth(_ credential: FIRAuthCredential) {
         FIRAuth.auth()?.signIn(with: credential, completion: { (user, error) in
@@ -33,9 +41,22 @@ class SignInVC: UIViewController {
 
             } else {
                 print("===NAG=== Successfully authenticated with Firebase")
-
+                
+                if let user = user {
+                    
+                    self.completeSignInWith(id: user.uid)
+                }
+                
             }
         })
+    }
+    
+    func completeSignInWith(id: String) {
+        KeychainWrapper.standard.set(id, forKey: KEY_UID)
+        print("===NAG=== Saved to keychain")
+        performSegue(withIdentifier: "goToFeed", sender: nil)
+
+
     }
     
     
@@ -78,6 +99,11 @@ class SignInVC: UIViewController {
                 
                 if error == nil {
                     print("===NAG=== Existing email authenticated with Firebase")
+                    
+                    if let user = user {
+                        self.completeSignInWith(id: user.uid)
+                    }
+
                 } else {
                     
                     print("===NAG=== Existing email auth failed with Firebase")
@@ -91,6 +117,10 @@ class SignInVC: UIViewController {
 
                         } else {
                             print("===NAG=== Successfully create and authenticate email user with Firebase")
+                            
+                            if let user = user {
+                                self.completeSignInWith(id: user.uid)
+                            }
 
                         }
                         
