@@ -26,6 +26,12 @@ class FeedVC: UIViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
+        DataService.sharedDataService.REF_POSTS.observe(.value, with: { snapshot in
+            
+            print("===NAG=== snapshot.value = \(snapshot.value)")
+        
+        })
+        
     }
     
     
