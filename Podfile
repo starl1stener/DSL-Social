@@ -12,7 +12,7 @@ target 'Nag Social' do
   pod 'Firebase/Storage'
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
-
+  pod 'SwiftKeychainWrapper'
 
 
 
