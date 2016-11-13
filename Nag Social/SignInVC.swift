@@ -73,6 +73,37 @@ class SignInVC: UIViewController {
     
     @IBAction func signInTapped(_ sender: AnyObject) {
         
+        if let email = emailField.text, let pwd = pwdField.text {
+            FIRAuth.auth()?.signIn(withEmail: email, password: pwd, completion: { (user, error) in
+                
+                if error == nil {
+                    print("===NAG=== Existing email authenticated with Firebase")
+                } else {
+                    
+                    print("===NAG=== Existing email auth failed with Firebase")
+                    print("===NAG=== \(error?.localizedDescription)")
+
+                    FIRAuth.auth()?.createUser(withEmail: email, password: pwd, completion: { (user, error) in
+                        
+                        if error != nil {
+                            print("===NAG=== Unable to create email user with Firebase")
+                            print("===NAG=== \(error?.localizedDescription)")
+
+                        } else {
+                            print("===NAG=== Successfully create and authenticate email user with Firebase")
+
+                        }
+                        
+                    })
+                    
+                }
+                
+            })
+            
+            
+        }
+        
+        
     }
     
     
