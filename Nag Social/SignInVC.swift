@@ -43,15 +43,18 @@ class SignInVC: UIViewController {
                 print("===NAG=== Successfully authenticated with Firebase")
                 
                 if let user = user {
-                    
-                    self.completeSignInWith(id: user.uid)
+                    let userData = ["provider": credential.provider]
+                    self.completeSignInWith(id: user.uid, userData: userData)
                 }
                 
             }
         })
     }
     
-    func completeSignInWith(id: String) {
+    func completeSignInWith(id: String, userData: [String: String]) {
+        
+        DataService.sharedDataService.createFirebaseDBUser(uid: id, userData: userData)
+        
         KeychainWrapper.standard.set(id, forKey: KEY_UID)
         print("===NAG=== Saved to keychain")
         performSegue(withIdentifier: "goToFeed", sender: nil)
@@ -101,7 +104,10 @@ class SignInVC: UIViewController {
                     print("===NAG=== Existing email authenticated with Firebase")
                     
                     if let user = user {
-                        self.completeSignInWith(id: user.uid)
+                        let userData = ["provider": user.providerID]
+                        self.completeSignInWith(id: user.uid, userData: userData)
+                        
+                        
                     }
 
                 } else {
@@ -119,7 +125,8 @@ class SignInVC: UIViewController {
                             print("===NAG=== Successfully create and authenticate email user with Firebase")
                             
                             if let user = user {
-                                self.completeSignInWith(id: user.uid)
+                                let userData = ["provider": user.providerID]
+                                self.completeSignInWith(id: user.uid, userData: userData)
                             }
 
                         }

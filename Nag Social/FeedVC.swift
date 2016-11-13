@@ -22,6 +22,10 @@ class FeedVC: UIViewController {
         // Do any additional setup after loading the view.
         
         print("===NAG=== WE ARE IN FEED VC")
+        
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        
     }
     
     
@@ -48,3 +52,38 @@ class FeedVC: UIViewController {
 
     
 }
+
+
+
+extension FeedVC: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        
+        
+        
+        return tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath)
+    }
+    
+}
+
+extension FeedVC: UITableViewDelegate {
+    
+}
+
+
+
+
+
+
+
+
+
