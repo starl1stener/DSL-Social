@@ -15,6 +15,8 @@ class FeedVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var imageAdd: CircleView!
     @IBOutlet weak var captionField: FancyField!
+    
+    var posts = [Post]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +30,21 @@ class FeedVC: UIViewController {
         
         DataService.sharedDataService.REF_POSTS.observe(.value, with: { snapshot in
             
-            print("===NAG=== snapshot.value = \(snapshot.value)")
+            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot] {
+                for snap in snapshot {
+//                    print("SNAP: \(snap)")
+                    
+                    if let postDict = snap.value as? [String: AnyObject] {
+                        
+                        let key = snap.key
+                        let post = Post(postKey: key, postData: postDict)
+                        
+                        self.posts.append(post)
+                        
+                    }
+                }
+            }
+            self.tableView.reloadData()
         
         })
         
@@ -68,12 +84,14 @@ extension FeedVC: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return self.posts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        let post = self.posts[indexPath.row]
         
+        print("===NAG=== post.caption = \(post.caption)")
         
         
         return tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath)
