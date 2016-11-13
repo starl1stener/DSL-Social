@@ -39,7 +39,6 @@ static NSString *const FBSDKLoginManagerLoggerParamAuthMethodKey = @"3_method";
 static NSString *const FBSDKLoginManagerLoggerParamErrorCodeKey = @"4_error_code";
 static NSString *const FBSDKLoginManagerLoggerParamErrorMessageKey = @"5_error_message";
 static NSString *const FBSDKLoginManagerLoggerParamExtrasKey = @"6_extras";
-static NSString *const FBSDKLoginManagerLoggerParamLoggingTokenKey = @"7_logging_token";
 
 static NSString *const FBSDKLoginManagerLoggerValueEmpty = @"";
 
@@ -63,7 +62,6 @@ static NSString *const FBSDKLoginManagerLoggerTryWebView = @"tryFallback";
   NSError *_lastError;
 
   NSString *_authMethod;
-  NSString *_loggingToken;
 }
 
 + (FBSDKLoginManagerLogger *)loggerFromParameters:(NSDictionary *)parameters
@@ -141,10 +139,9 @@ static NSString *const FBSDKLoginManagerLoggerTryWebView = @"tryFallback";
     [self logEvent:FBSDKAppEventNameFBSessionAuthEnd result:_lastResult error:_lastError];
 }
 
-- (void)startAuthMethod:(NSString *)authMethod loggingToken:(NSString *)loggingToken
+- (void)startAuthMethod:(NSString *)authMethod
 {
-  _authMethod = [authMethod copy];
-  _loggingToken = [loggingToken copy];
+  _authMethod = authMethod;
   [self logEvent:FBSDKAppEventNameFBSessionAuthMethodStart params:[self _parametersForNewEvent]];
 }
 
@@ -211,16 +208,6 @@ static NSString *const FBSDKLoginManagerLoggerTryWebView = @"tryFallback";
   }];
 }
 
-- (void)logNativeAppDialogResult:(BOOL)result dialogDuration:(NSTimeInterval)dialogDuration
-{
-  NSOperatingSystemVersion iOS10Version = { .majorVersion = 10, .minorVersion = 0, .patchVersion = 0 };
-  if ([FBSDKInternalUtility isOSRunTimeVersionAtLeast:iOS10Version]) {
-    _extras[@"native_app_login_dialog_duration"] = @(dialogDuration);
-    _extras[@"native_app_login_dialog_result"] = @(result);
-    [self logEvent:FBSDKAppEventNameFBSessionNativeAppSwitchLoginDialogResult params:[self _parametersForNewEvent]];
-  }
-}
-
 #pragma mark - Private
 
 - (NSString *)clientStateForAuthMethod:(NSString *)authMethod andExistingState:(NSDictionary *)existingState
@@ -252,7 +239,6 @@ static NSString *const FBSDKLoginManagerLoggerTryWebView = @"tryFallback";
     eventParameters[FBSDKLoginManagerLoggerParamErrorCodeKey] = FBSDKLoginManagerLoggerValueEmpty;
     eventParameters[FBSDKLoginManagerLoggerParamErrorMessageKey] = FBSDKLoginManagerLoggerValueEmpty;
     eventParameters[FBSDKLoginManagerLoggerParamExtrasKey] = FBSDKLoginManagerLoggerValueEmpty;
-    eventParameters[FBSDKLoginManagerLoggerParamLoggingTokenKey] = _loggingToken ?: FBSDKLoginManagerLoggerValueEmpty;
 
     return eventParameters;
 }
