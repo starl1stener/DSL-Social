@@ -93,8 +93,14 @@ extension FeedVC: UITableViewDataSource {
         
         print("===NAG=== post.caption = \(post.caption)")
         
+        if let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as? PostCell {
+            postCell.configureCell(post: post)
+            return postCell
+        } else {
+            return PostCell()
+        }
         
-        return tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath)
+        
     }
     
 }
