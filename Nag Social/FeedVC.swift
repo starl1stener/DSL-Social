@@ -19,6 +19,7 @@ class FeedVC: UIViewController {
     var posts = [Post]()
     
     var imagePicker: UIImagePickerController!
+    var imageSelected = false
     
     static var imageCache: NSCache<NSString, UIImage> = NSCache()
 
@@ -67,7 +68,38 @@ class FeedVC: UIViewController {
     
     @IBAction func postBtnTapped(_ sender: AnyObject) {
         
+        guard let caption = captionField.text, caption != "" else {
+            print("===NAG=== caption has to be entered")
+            return
+        }
+        
+        guard let image = imageAdd.image, imageSelected == true else {
+            print("===NAG=== an image has to be selected")
+            return
+        }
+        
+        if let imageData = UIImageJPEGRepresentation(image, 0.2) {
+            
+            let imageUid = NSUUID().uuidString
+            print("===NAG=== imageUid = \(imageUid)")
+            
+            let metaData = FIRStorageMetadata()
+            metaData.contentType = "image/jpeg"
+            
+            DataService.sharedDataService.REF_POST_IMAGES.child(imageUid).put(imageData, metadata: metaData, completion: { (metaData, error) in
+                
+                if error != nil {
+                    print("===NAG=== Unable to upload image to Firebase Storage")
+                } else {
+                    print("===NAG=== Successfully image uploaded to Firebase Storage")
+                    let downloadURL = metaData?.downloadURL()?.absoluteString // URL for use in Firebase DB for post, postImageUrl
+                }
+            })
+        }
+        
     }
+    
+    
     
     
     
@@ -132,6 +164,7 @@ extension FeedVC: UIImagePickerControllerDelegate, UINavigationControllerDelegat
         
         if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
             self.imageAdd.image = image
+            self.imageSelected = true
         } else {
             print("===NAG=== Valid image wasn't selected")
         }
