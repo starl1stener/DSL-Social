@@ -37,7 +37,7 @@ class FeedVC: UIViewController {
         self.imagePicker.allowsEditing = true
         self.imagePicker.delegate = self
         
-        DataService.sharedDataService.REF_POSTS.observe(.value, with: { snapshot in
+        DataService.sharedDataService.REF_POSTS.queryOrdered(byChild: "postedDate").observe(.value, with: { snapshot in
             
             self.posts = []
             
@@ -49,11 +49,12 @@ class FeedVC: UIViewController {
                         let key = snap.key
                         let post = Post(postKey: key, postData: postDict)
                         
-                        self.posts.append(post)
-                        
+                        self.posts.insert(post, at: 0)
                     }
                 }
+                
             }
+            
             self.tableView.reloadData()
         
         })
@@ -107,9 +108,10 @@ class FeedVC: UIViewController {
     func postToFirebase(imageUrl: String) {
         let postData: Dictionary<String, AnyObject> = [
             
-            "caption":  captionField.text! as AnyObject,
-            "imageUrl": imageUrl as AnyObject,
-            "likes":    0 as AnyObject
+            "caption":      captionField.text! as AnyObject,
+            "imageUrl":     imageUrl as AnyObject,
+            "likes":        0 as AnyObject,
+            "postedDate":   FIRServerValue.timestamp() as AnyObject
         ]
         
         let firebasePost = DataService.sharedDataService.REF_POSTS.childByAutoId()
