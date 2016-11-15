@@ -39,9 +39,10 @@ class FeedVC: UIViewController {
         
         DataService.sharedDataService.REF_POSTS.observe(.value, with: { snapshot in
             
+            self.posts = []
+            
             if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot] {
                 for snap in snapshot {
-//                    print("SNAP: \(snap)")
                     
                     if let postDict = snap.value as? [String: AnyObject] {
                         
@@ -81,8 +82,6 @@ class FeedVC: UIViewController {
         if let imageData = UIImageJPEGRepresentation(image, 0.2) {
             
             let imageUid = NSUUID().uuidString
-            print("===NAG=== imageUid = \(imageUid)")
-            
             let metaData = FIRStorageMetadata()
             metaData.contentType = "image/jpeg"
             
@@ -93,13 +92,35 @@ class FeedVC: UIViewController {
                 } else {
                     print("===NAG=== Successfully image uploaded to Firebase Storage")
                     let downloadURL = metaData?.downloadURL()?.absoluteString // URL for use in Firebase DB for post, postImageUrl
+                    
+                    if let url = downloadURL {
+                        
+                        self.postToFirebase(imageUrl: url)
+                    }
+                    
                 }
             })
         }
         
     }
     
-    
+    func postToFirebase(imageUrl: String) {
+        let postData: Dictionary<String, Any> = [
+            
+            "caption":  captionField.text!,
+            "imageUrl": imageUrl,
+            "likes":    0
+        ]
+        
+        let firebasePost = DataService.sharedDataService.REF_POSTS.childByAutoId()
+        
+        firebasePost.setValue(postData)
+        
+        captionField.text = ""
+        imageSelected = false
+        imageAdd.image = UIImage(named: "add-image")
+        
+    }
     
     
     
