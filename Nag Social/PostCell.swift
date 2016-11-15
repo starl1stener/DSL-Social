@@ -35,6 +35,8 @@ class PostCell: UITableViewCell {
 
     func configureCell(post: Post, image: UIImage? = nil) {
         
+        self.likeImg.image = UIImage(named: "empty-heart")
+        
         likesRef = DataService.sharedDataService.REF_USER_CURRENT.child("likes").child(post.postKey)
 
         self.post = post

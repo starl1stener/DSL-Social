@@ -105,11 +105,11 @@ class FeedVC: UIViewController {
     }
     
     func postToFirebase(imageUrl: String) {
-        let postData: Dictionary<String, Any> = [
+        let postData: Dictionary<String, AnyObject> = [
             
-            "caption":  captionField.text!,
-            "imageUrl": imageUrl,
-            "likes":    0
+            "caption":  captionField.text! as AnyObject,
+            "imageUrl": imageUrl as AnyObject,
+            "likes":    0 as AnyObject
         ]
         
         let firebasePost = DataService.sharedDataService.REF_POSTS.childByAutoId()
