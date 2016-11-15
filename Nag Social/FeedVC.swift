@@ -17,6 +17,10 @@ class FeedVC: UIViewController {
     @IBOutlet weak var captionField: FancyField!
     
     var posts = [Post]()
+    
+    var imagePicker: UIImagePickerController!
+    
+    static var imageCache: NSCache<NSString, UIImage> = NSCache()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +31,10 @@ class FeedVC: UIViewController {
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
+        self.imagePicker = UIImagePickerController()
+        self.imagePicker.allowsEditing = true
+        self.imagePicker.delegate = self
         
         DataService.sharedDataService.REF_POSTS.observe(.value, with: { snapshot in
             
@@ -52,6 +60,8 @@ class FeedVC: UIViewController {
     
     
     @IBAction func addImageTapped(_ sender: AnyObject) {
+        present(imagePicker, animated: true, completion: nil)
+        
         
     }
     
@@ -93,8 +103,21 @@ extension FeedVC: UITableViewDataSource {
         
         print("===NAG=== post.caption = \(post.caption)")
         
+        if let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as? PostCell {
+            
+            if let cachedImage = FeedVC.imageCache.object(forKey: post.imageUrl as NSString) {
+                postCell.configureCell(post: post, image: cachedImage)
+                return postCell
+            } else {
+                postCell.configureCell(post: post)
+                return postCell
+            }
+            
+        } else {
+            return PostCell()
+        }
         
-        return tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath)
+        
     }
     
 }
@@ -103,6 +126,23 @@ extension FeedVC: UITableViewDelegate {
     
 }
 
+extension FeedVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
+            self.imageAdd.image = image
+        } else {
+            print("===NAG=== Valid image wasn't selected")
+        }
+        
+        
+        imagePicker.dismiss(animated: true, completion: nil)
+        
+        
+    }
+    
+}
 
 
 
