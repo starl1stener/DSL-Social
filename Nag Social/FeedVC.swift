@@ -19,6 +19,8 @@ class FeedVC: UIViewController {
     var posts = [Post]()
     
     var imagePicker: UIImagePickerController!
+    
+    static var imageCache: NSCache<NSString, UIImage> = NSCache()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,8 +104,15 @@ extension FeedVC: UITableViewDataSource {
         print("===NAG=== post.caption = \(post.caption)")
         
         if let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as? PostCell {
-            postCell.configureCell(post: post)
-            return postCell
+            
+            if let cachedImage = FeedVC.imageCache.object(forKey: post.imageUrl as NSString) {
+                postCell.configureCell(post: post, image: cachedImage)
+                return postCell
+            } else {
+                postCell.configureCell(post: post)
+                return postCell
+            }
+            
         } else {
             return PostCell()
         }
