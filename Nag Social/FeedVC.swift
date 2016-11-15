@@ -161,9 +161,11 @@ extension FeedVC: UITableViewDataSource {
             if let cachedImage = FeedVC.imageCache.object(forKey: post.imageUrl as NSString) {
                 postCell.configureCell(post: post, image: cachedImage)
                 return postCell
+
             } else {
                 postCell.configureCell(post: post)
                 return postCell
+
             }
             
         } else {
