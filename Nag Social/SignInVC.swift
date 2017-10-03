@@ -34,8 +34,8 @@ class SignInVC: UIViewController {
     }
     
     
-    func firebaseAuth(_ credential: FIRAuthCredential) {
-        FIRAuth.auth()?.signIn(with: credential, completion: { (user, error) in
+    func firebaseAuth(_ credential: AuthCredential) {
+        Auth.auth().signIn(with: credential, completion: { (user, error) in
             if error != nil {
                 print("===NAG=== Unable to authenticate with Firebase \(error?.localizedDescription)")
 
@@ -84,7 +84,7 @@ class SignInVC: UIViewController {
 
                 print("FBSDKAccessToken.current().tokenString = \(FBSDKAccessToken.current().tokenString)")
                 
-                let credential = FIRFacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+                let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
                 
                 self.firebaseAuth(credential)
             }
@@ -98,7 +98,7 @@ class SignInVC: UIViewController {
     @IBAction func signInTapped(_ sender: AnyObject) {
         
         if let email = emailField.text, let pwd = pwdField.text {
-            FIRAuth.auth()?.signIn(withEmail: email, password: pwd, completion: { (user, error) in
+            Auth.auth().signIn(withEmail: email, password: pwd, completion: { (user, error) in
                 
                 if error == nil {
                     print("===NAG=== Existing email authenticated with Firebase")
@@ -115,7 +115,7 @@ class SignInVC: UIViewController {
                     print("===NAG=== Existing email auth failed with Firebase")
                     print("===NAG=== \(error?.localizedDescription)")
 
-                    FIRAuth.auth()?.createUser(withEmail: email, password: pwd, completion: { (user, error) in
+                    Auth.auth().createUser(withEmail: email, password: pwd, completion: { (user, error) in
                         
                         if error != nil {
                             print("===NAG=== Unable to create email user with Firebase")
