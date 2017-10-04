@@ -19,7 +19,6 @@ class Post {
 
     private var _postRef: DatabaseReference!
     
-    
     var caption: String {
         return _caption
     }
@@ -79,23 +78,8 @@ class Post {
         
         _postRef.child("likes").setValue(_likes)
         
-        
     }
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
