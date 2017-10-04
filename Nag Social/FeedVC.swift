@@ -22,10 +22,10 @@ class FeedVC: UIViewController {
     var imageSelected = false
     
     static var imageCache: NSCache<NSString, UIImage> = NSCache()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         
         print("===NAG=== WE ARE IN FEED VC")
@@ -41,7 +41,7 @@ class FeedVC: UIViewController {
             
             self.posts = []
             
-            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot] {
+            if let snapshot = snapshot.children.allObjects as? [DataSnapshot] {
                 for snap in snapshot {
                     
                     if let postDict = snap.value as? [String: AnyObject] {
@@ -56,7 +56,7 @@ class FeedVC: UIViewController {
             }
             
             self.tableView.reloadData()
-        
+            
         })
         
     }
@@ -83,10 +83,10 @@ class FeedVC: UIViewController {
         if let imageData = UIImageJPEGRepresentation(image, 0.2) {
             
             let imageUid = NSUUID().uuidString
-            let metaData = FIRStorageMetadata()
+            let metaData = StorageMetadata()
             metaData.contentType = "image/jpeg"
             
-            DataService.sharedDataService.REF_POST_IMAGES.child(imageUid).put(imageData, metadata: metaData, completion: { (metaData, error) in
+            DataService.sharedDataService.REF_POST_IMAGES.child(imageUid).putData(imageData, metadata: metaData, completion: { (metaData, error) in
                 
                 if error != nil {
                     print("===NAG=== Unable to upload image to Firebase Storage")
@@ -100,7 +100,11 @@ class FeedVC: UIViewController {
                     }
                     
                 }
+                
             })
+            
+            
+            
         }
         
     }
@@ -111,7 +115,7 @@ class FeedVC: UIViewController {
             "caption":      captionField.text! as AnyObject,
             "imageUrl":     imageUrl as AnyObject,
             "likes":        0 as AnyObject,
-            "postedDate":   FIRServerValue.timestamp() as AnyObject
+            "postedDate":   ServerValue.timestamp() as AnyObject
         ]
         
         let firebasePost = DataService.sharedDataService.REF_POSTS.childByAutoId()
@@ -130,13 +134,13 @@ class FeedVC: UIViewController {
         
         KeychainWrapper.standard.removeObject(forKey: KEY_UID)
         print("===NAG=== Logout")
-
-        try! FIRAuth.auth()?.signOut()
+        
+        try! Auth.auth().signOut()
         
         performSegue(withIdentifier: "goToSignIn", sender: nil)
     }
-
-
+    
+    
     
 }
 
@@ -163,11 +167,11 @@ extension FeedVC: UITableViewDataSource {
             if let cachedImage = FeedVC.imageCache.object(forKey: post.imageUrl as NSString) {
                 postCell.configureCell(post: post, image: cachedImage)
                 return postCell
-
+                
             } else {
                 postCell.configureCell(post: post)
                 return postCell
-
+                
             }
             
         } else {
@@ -178,6 +182,8 @@ extension FeedVC: UITableViewDataSource {
     }
     
 }
+
+
 
 extension FeedVC: UITableViewDelegate {
     

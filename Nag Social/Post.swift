@@ -17,8 +17,7 @@ class Post {
     private var _postKey: String!
     private var _postedDate: String!
 
-    private var _postRef: FIRDatabaseReference!
-    
+    private var _postRef: DatabaseReference!
     
     var caption: String {
         return _caption
@@ -79,23 +78,8 @@ class Post {
         
         _postRef.child("likes").setValue(_likes)
         
-        
     }
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

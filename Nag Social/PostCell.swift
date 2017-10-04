@@ -19,7 +19,7 @@ class PostCell: UITableViewCell {
     @IBOutlet weak var likeImg: UIImageView!
 
     var post: Post!
-    var likesRef: FIRDatabaseReference!
+    var likesRef: DatabaseReference!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -48,9 +48,9 @@ class PostCell: UITableViewCell {
             self.postImg.image = image
         } else {
             
-            let ref = FIRStorage.storage().reference(forURL: post.imageUrl)
+            let ref = Storage.storage().reference(forURL: post.imageUrl)
             
-            ref.data(withMaxSize: 2 * 1024 * 1024, completion: { (data, error) in
+            ref.getData(maxSize: 2 * 1024 * 1024, completion: { (data, error) in
                 
                 if error != nil {
                     print("===NAG=== Unable to download image from Firebase storage")
@@ -64,9 +64,7 @@ class PostCell: UITableViewCell {
                         }
                     }
                 }
-                
             })
-            
         }
         
         likesRef.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -78,8 +76,6 @@ class PostCell: UITableViewCell {
             }
             
         })
-    
-    
     }
     
     func likeTapped(sender: UITapGestureRecognizer) {
@@ -94,24 +90,7 @@ class PostCell: UITableViewCell {
                 self.post.adjustLikes(addLike: false)
                 self.likesRef.removeValue()
             }
-            
         })
-        
     }
-    
-    
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
 

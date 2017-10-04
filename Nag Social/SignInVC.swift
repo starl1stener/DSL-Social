@@ -19,9 +19,7 @@ class SignInVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
+       
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -34,10 +32,10 @@ class SignInVC: UIViewController {
     }
     
     
-    func firebaseAuth(_ credential: FIRAuthCredential) {
-        FIRAuth.auth()?.signIn(with: credential, completion: { (user, error) in
+    func firebaseAuth(_ credential: AuthCredential) {
+        Auth.auth().signIn(with: credential, completion: { (user, error) in
             if error != nil {
-                print("===NAG=== Unable to authenticate with Firebase \(error?.localizedDescription)")
+                print("===NAG=== Unable to authenticate with Firebase \(error!.localizedDescription)")
 
             } else {
                 print("===NAG=== Successfully authenticated with Firebase")
@@ -73,7 +71,7 @@ class SignInVC: UIViewController {
             (result, error) in
             
             if error != nil {
-                print("===NAG=== Unable to authenticate with Facebook \(error?.localizedDescription)")
+                print("===NAG=== Unable to authenticate with Facebook \(error!.localizedDescription)")
             } else if result?.isCancelled == true {
                 print("===NAG=== User cancelled FB authentication")
 
@@ -84,21 +82,17 @@ class SignInVC: UIViewController {
 
                 print("FBSDKAccessToken.current().tokenString = \(FBSDKAccessToken.current().tokenString)")
                 
-                let credential = FIRFacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+                let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
                 
                 self.firebaseAuth(credential)
             }
-            
         }
-        
-        
-        
     }
     
     @IBAction func signInTapped(_ sender: AnyObject) {
         
         if let email = emailField.text, let pwd = pwdField.text {
-            FIRAuth.auth()?.signIn(withEmail: email, password: pwd, completion: { (user, error) in
+            Auth.auth().signIn(withEmail: email, password: pwd, completion: { (user, error) in
                 
                 if error == nil {
                     print("===NAG=== Existing email authenticated with Firebase")
@@ -107,7 +101,6 @@ class SignInVC: UIViewController {
                         let userData = ["provider": user.providerID]
                         self.completeSignInWith(id: user.uid, userData: userData)
                         
-                        
                     }
 
                 } else {
@@ -115,7 +108,7 @@ class SignInVC: UIViewController {
                     print("===NAG=== Existing email auth failed with Firebase")
                     print("===NAG=== \(error?.localizedDescription)")
 
-                    FIRAuth.auth()?.createUser(withEmail: email, password: pwd, completion: { (user, error) in
+                    Auth.auth().createUser(withEmail: email, password: pwd, completion: { (user, error) in
                         
                         if error != nil {
                             print("===NAG=== Unable to create email user with Firebase")
@@ -128,21 +121,11 @@ class SignInVC: UIViewController {
                                 let userData = ["provider": user.providerID]
                                 self.completeSignInWith(id: user.uid, userData: userData)
                             }
-
                         }
-                        
                     })
-                    
                 }
-                
             })
-            
-            
         }
-        
-        
     }
-    
-    
 }
 
