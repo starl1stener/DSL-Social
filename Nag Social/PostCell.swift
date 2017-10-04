@@ -50,8 +50,6 @@ class PostCell: UITableViewCell {
             
             let ref = Storage.storage().reference(forURL: post.imageUrl)
             
-            
-            
             ref.getData(maxSize: 2 * 1024 * 1024, completion: { (data, error) in
                 
                 if error != nil {
@@ -66,9 +64,7 @@ class PostCell: UITableViewCell {
                         }
                     }
                 }
-                
             })
-            
         }
         
         likesRef.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -80,8 +76,6 @@ class PostCell: UITableViewCell {
             }
             
         })
-    
-    
     }
     
     func likeTapped(sender: UITapGestureRecognizer) {
@@ -96,24 +90,7 @@ class PostCell: UITableViewCell {
                 self.post.adjustLikes(addLike: false)
                 self.likesRef.removeValue()
             }
-            
         })
-        
     }
-    
-    
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
