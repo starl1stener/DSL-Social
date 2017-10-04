@@ -19,9 +19,7 @@ class SignInVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
+       
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -37,7 +35,7 @@ class SignInVC: UIViewController {
     func firebaseAuth(_ credential: AuthCredential) {
         Auth.auth().signIn(with: credential, completion: { (user, error) in
             if error != nil {
-                print("===NAG=== Unable to authenticate with Firebase \(error?.localizedDescription)")
+                print("===NAG=== Unable to authenticate with Firebase \(error!.localizedDescription)")
 
             } else {
                 print("===NAG=== Successfully authenticated with Firebase")
@@ -73,7 +71,7 @@ class SignInVC: UIViewController {
             (result, error) in
             
             if error != nil {
-                print("===NAG=== Unable to authenticate with Facebook \(error?.localizedDescription)")
+                print("===NAG=== Unable to authenticate with Facebook \(error!.localizedDescription)")
             } else if result?.isCancelled == true {
                 print("===NAG=== User cancelled FB authentication")
 
@@ -88,11 +86,7 @@ class SignInVC: UIViewController {
                 
                 self.firebaseAuth(credential)
             }
-            
         }
-        
-        
-        
     }
     
     @IBAction func signInTapped(_ sender: AnyObject) {
@@ -106,7 +100,6 @@ class SignInVC: UIViewController {
                     if let user = user {
                         let userData = ["provider": user.providerID]
                         self.completeSignInWith(id: user.uid, userData: userData)
-                        
                         
                     }
 
@@ -128,21 +121,11 @@ class SignInVC: UIViewController {
                                 let userData = ["provider": user.providerID]
                                 self.completeSignInWith(id: user.uid, userData: userData)
                             }
-
                         }
-                        
                     })
-                    
                 }
-                
             })
-            
-            
         }
-        
-        
     }
-    
-    
 }
 
